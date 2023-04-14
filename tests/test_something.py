@@ -1,15 +1,14 @@
 import requests
 from configuration import SERVICE_URL
-from src.enums.global_enums import GlobalErrorMessages
+
+from src.base_classes.response import Response
 from jsonschema import validate
 from src.schemas.post import POST_SCHEMA
 
 def test_getting_posts():
-    response = requests.get(url=SERVICE_URL)
-    received_posts = response.json()
-    print(received_posts)
-    assert response.status_code == 200, GlobalErrorMessages.WRONG_STATUS_CODE.value
-    assert len(received_posts) == 2, GlobalErrorMessages.WRONG_ELEMENT_COUNT.value
+    r = requests.get(url=SERVICE_URL)
+    response = Response(r)
+    response.assert_status_code(200).validate(POST_SCHEMA)
 
 
 # {'data': [{'company_id': 1, 'company_name': 'Tesla', 'company_address': 'Nicholastown, IL 80126', 'company_status': 'ACTIVE'},
