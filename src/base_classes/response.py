@@ -10,7 +10,7 @@ class Response:
         self.response_status = response.status_code
 
     def validate(self, schema):
-        validate(self.response_json, schema)
+        schema.parse_obj(self.response_json)
 
     def assert_status_code(self, status_code):
         if isinstance(status_code, list):
